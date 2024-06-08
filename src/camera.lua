@@ -26,6 +26,36 @@ function Camera.create()
 
 	self.hud = Hud()
 
+	self.shieldShader = love.graphics.newShader[[
+		extern number radius;
+		
+		extern vec2 to_world_tran;
+		extern mat2 to_world_rot;
+		
+		vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
+			vec4 pixel = Texel(texture, texture_coords );//This is the current pixel color
+			
+			vec2 world_coords = to_world_rot * (screen_coords - to_world_tran);
+			
+			number r = world_coords.x * world_coords.x + world_coords.y * world_coords.y;
+			number limit = radius * radius;
+			
+			if(r < limit){
+				return vec4(1.0,0.0,0.0,0.5);//red
+			}
+			else
+			{
+				return vec4(0,0.0,0.0,0);//clear
+			}
+		}
+	]]
+
+	-- transform screen coords to worlds cords
+	--p00x + x * xdx + y * ydx, p00y + x * xdy + y * ydy
+	self.shieldShader:send("radius", 100)
+	self.shieldShader:send("to_world_tran", {50, 200}) 
+	self.shieldShader:send("to_world_rot", {{1, 0}, {0, 1}}) 
+
 	return self
 end
 
@@ -434,6 +464,11 @@ function Camera:drawPlayer(player, debugmode)
 	--Set translation for hud
 	love.graphics.origin()
 	love.graphics.translate(scissor.x, scissor.y)
+
+	
+	love.graphics.setShader(self.shieldShader) --draw something here
+	love.graphics.rectangle( "fill", 0, 0, scissor.width, scissor.height)
+	love.graphics.setShader()
 
 	--Draw shields
 	love.graphics.setColor(31/255, 63/255, 143/255, 95/255)
