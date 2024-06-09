@@ -41,7 +41,12 @@ function Camera.create()
 			number limit = radius * radius;
 			
 			if(r < limit){
-				return vec4(1.0,0.0,0.0,0.5);//red
+				number c = r/limit;
+				number edge = c*c;
+				number rim = edge * edge;
+				//return vec4(1, rim*rim, rim*rim, edge);
+				//return vec4(rim, 1, rim*rim, edge);
+				return vec4(rim*rim/2, rim/2, 1, edge);
 			}
 			else
 			{
@@ -337,11 +342,13 @@ function Camera:drawWorldObjects(player, debugmode)
 	local shieldCategoryNumber = PhysicsReferences.categories["shield"]
 
 	local testPointFunctions = {}
+	local shieldData = {}
 	for _, shieldFixture in ipairs(fixtureList[shieldCategoryNumber]) do
 		table.insert(testPointFunctions, shieldFixture:getUserData().testPoint())
+		table.insert(shieldData, {shieldFixture:getUserData():data()})
 	end
 	player.shieldPoints = player.camera:testPoints(testPointFunctions)
-
+	self.shieldData = shieldData
 
 	endTime = love.timer.getTime( )
 	duration = endTime - startTime
@@ -465,6 +472,13 @@ function Camera:drawPlayer(player, debugmode)
 	love.graphics.origin()
 	love.graphics.translate(scissor.x, scissor.y)
 
+	self.shieldShader:send("radius", 100)
+	self.shieldShader:send("to_world_tran", {50, 200}) 
+	self.shieldShader:send("to_world_rot", {{1, 0}, {0, 1}})
+	
+	if self.shieldData[1] then
+		self.shieldShader:send("radius", self.zoom * self.shieldData[1][2])
+	end
 	
 	love.graphics.setShader(self.shieldShader) --draw something here
 	love.graphics.rectangle( "fill", 0, 0, scissor.width, scissor.height)

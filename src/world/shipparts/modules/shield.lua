@@ -61,6 +61,11 @@ function Shield:createFixture()
 				return (dx * dx) + (dy * dy) < rsq
 			end
 		end,
+		data = function()
+			local x, y = body:getWorldPoints(cx, cy)
+			local radius = minf(self.health, radius)
+			return {x, y}, radius
+		end,
 		draw = function() end,
 	})
 end
