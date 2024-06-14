@@ -1,0 +1,620 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
+  "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" version="XHTML+RDFa 1.0" dir="ltr">
+
+<head profile="http://www.w3.org/1999/xhtml/vocab">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="https://blogs.love2d.org/sites/default/files/favicon.ico" type="image/vnd.microsoft.icon" />
+<link rel="shortlink" href="/node/46" />
+<link rel="canonical" href="/content/beginners-guide-shaders" />
+<meta name="Generator" content="Drupal 7 (http://drupal.org)" />
+  <title>A Beginner&#039;s Guide to Shaders | LÖVE • Community Blogs</title>
+  <link type="text/css" rel="stylesheet" href="https://blogs.love2d.org/sites/default/files/css/css_xE-rWrJf-fncB6ztZfd2huxqgxu4WO-qwma6Xer30m4.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://blogs.love2d.org/sites/default/files/css/css_OuMU3Nd1azT1t09dTl-45Dz4qncgaO2nehs7VZQq3s0.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://blogs.love2d.org/sites/default/files/css/css_9D4Z8GTJ-SRMRsfkVd4SFuNRsOKOcekbp-lc_3GI8TM.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://blogs.love2d.org/sites/default/files/css/css_NbsMBycBID8bsp_m4_QUbLRWeuiHt9uikEVTkN9eCUU.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://blogs.love2d.org/sites/default/files/css/css_2THG1eGiBIizsWFeexsNe1iDifJ00QRS9uSd03rY9co.css" media="print" />
+
+<!--[if lte IE 7]>
+<link type="text/css" rel="stylesheet" href="https://blogs.love2d.org/sites/all/themes/bartik/css/ie.css?qy5bux" media="all" />
+<![endif]-->
+
+<!--[if IE 6]>
+<link type="text/css" rel="stylesheet" href="https://blogs.love2d.org/sites/all/themes/bartik/css/ie6.css?qy5bux" media="all" />
+<![endif]-->
+  <script type="text/javascript" src="https://blogs.love2d.org/sites/default/files/js/js_vDrW3Ry_4gtSYaLsh77lWhWjIC6ml2QNkcfvfP5CVFs.js"></script>
+<script type="text/javascript" src="https://blogs.love2d.org/sites/default/files/js/js_hPtauGTE3-r62hE1hhxUYVa1-sI2t_0rczxwg3e9gkg.js"></script>
+<script type="text/javascript" src="https://blogs.love2d.org/sites/default/files/js/js_gPqjYq7fqdMzw8-29XWQIVoDSWTmZCGy9OqaHppNxuQ.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+(function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga");ga("create", "UA-34049681-3", {"cookieDomain":"auto"});ga("send", "pageview");
+//--><!]]>
+</script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","ajaxPageState":{"theme":"bartik","theme_token":"bpi8dq5tqSvb6AJD9_5SqdQqrbK_BkDvTJTzHQlIecA","js":{"sites\/all\/modules\/syntaxhighlighter\/syntaxhighlighter.min.js":1,"sites\/all\/modules\/addthis\/addthis.js":1,"misc\/jquery.js":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1,"sites\/all\/libraries\/syntaxhighlighter_3.0.83\/scripts\/shCore.js":1,"sites\/all\/libraries\/syntaxhighlighter_3.0.83\/scripts\/shBrushBash.js":1,"sites\/all\/libraries\/syntaxhighlighter_3.0.83\/scripts\/shBrushLua.js":1,"sites\/all\/modules\/google_analytics\/googleanalytics.js":1,"0":1},"css":{"modules\/system\/system.base.css":1,"modules\/system\/system.menus.css":1,"modules\/system\/system.messages.css":1,"modules\/system\/system.theme.css":1,"modules\/comment\/comment.css":1,"modules\/field\/theme\/field.css":1,"sites\/all\/modules\/mollom\/mollom.css":1,"modules\/node\/node.css":1,"modules\/user\/user.css":1,"sites\/all\/modules\/views\/css\/views.css":1,"sites\/all\/modules\/ckeditor\/css\/ckeditor.css":1,"sites\/all\/modules\/ctools\/css\/ctools.css":1,"sites\/all\/libraries\/syntaxhighlighter_3.0.83\/styles\/shCore.css":1,"sites\/all\/libraries\/syntaxhighlighter_3.0.83\/styles\/shThemeDefault.css":1,"sites\/all\/modules\/tagclouds\/tagclouds.css":1,"sites\/all\/themes\/bartik\/css\/layout.css":1,"sites\/all\/themes\/bartik\/css\/style.css":1,"sites\/all\/themes\/bartik\/css\/colors.css":1,"sites\/all\/themes\/bartik\/css\/print.css":1,"sites\/all\/themes\/bartik\/css\/ie.css":1,"sites\/all\/themes\/bartik\/css\/ie6.css":1}},"googleanalytics":{"trackOutbound":1,"trackMailto":1,"trackDownload":1,"trackDownloadExtensions":"7z|aac|arc|arj|asf|asx|avi|bin|csv|doc(x|m)?|dot(x|m)?|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt(x|m)?|pot(x|m)?|pps(x|m)?|ppam|sld(x|m)?|thmx|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls(x|m|b)?|xlt(x|m)|xlam|xml|z|zip"},"urlIsAjaxTrusted":{"\/content\/beginners-guide-shaders?destination=node\/46":true},"addthis":{"async":false,"domready":true,"widget_url":"http:\/\/s7.addthis.com\/js\/300\/addthis_widget.js","addthis_config":{"pubid":"","services_compact":"facebook,google_plusone_share,hackernews,reddit,twitter,more","services_exclude":"","data_track_clickback":false,"ui_508_compliant":false,"ui_click":false,"ui_cobrand":"","ui_delay":0,"ui_header_background":"","ui_header_color":"","ui_open_windows":false,"ui_use_css":true,"ui_use_addressbook":false,"ui_language":"en"},"addthis_share":{"templates":{"twitter":"{{title}} {{url}}"}}}});
+//--><!]]>
+</script>
+</head>
+<body class="html not-front not-logged-in one-sidebar sidebar-second page-node page-node- page-node-46 node-type-blog-post" >
+  <div id="skip-link">
+    <a href="#main-content" class="element-invisible element-focusable">Skip to main content</a>
+  </div>
+    <div id="page-wrapper"><div id="page">
+
+  <div id="header" class="without-secondary-menu"><div class="section clearfix">
+
+          <a href="/" title="Home" rel="home" id="logo">
+        <img src="https://blogs.love2d.org/sites/default/files/widecat.png" alt="Home" />
+      </a>
+    
+          <div id="name-and-slogan">
+
+                              <div id="site-name">
+              <strong>
+                <a href="/" title="Home" rel="home"><span>LÖVE • Community Blogs</span></a>
+              </strong>
+            </div>
+                  
+                  <div id="site-slogan">
+            The official community LÖVE blogs.          </div>
+        
+      </div> <!-- /#name-and-slogan -->
+    
+      <div class="region region-header">
+    <div id="block-user-login" class="block block-user">
+
+    <h2 class="element-invisible">User login</h2>
+  
+  <div class="content">
+    <form action="/content/beginners-guide-shaders?destination=node/46" method="post" id="user-login-form" accept-charset="UTF-8"><div><div class="form-item form-type-textfield form-item-name">
+  <label for="edit-name">Username <span class="form-required" title="This field is required.">*</span></label>
+ <input type="text" id="edit-name" name="name" value="" size="15" maxlength="60" class="form-text required" />
+</div>
+<div class="form-item form-type-password form-item-pass">
+  <label for="edit-pass">Password <span class="form-required" title="This field is required.">*</span></label>
+ <input type="password" id="edit-pass" name="pass" size="15" maxlength="128" class="form-text required" />
+</div>
+<div class="item-list"><ul><li class="first"><a href="/user/register" title="Create a new user account.">Create new account</a></li>
+<li class="last"><a href="/user/password" title="Request new password via e-mail.">Request new password</a></li>
+</ul></div><input type="hidden" name="form_build_id" value="form-bqWPdNK8VKGz0a4IMvgUdICVglRT5KR7jURFIeMoPfM" />
+<input type="hidden" name="form_id" value="user_login_block" />
+<div class="form-actions form-wrapper" id="edit-actions"><input type="submit" id="edit-submit" name="op" value="Log in" class="form-submit" /></div></div></form>  </div>
+</div>
+  </div>
+
+          <div id="main-menu" class="navigation">
+        <h2 class="element-invisible">Main menu</h2><ul id="main-menu-links" class="links clearfix"><li class="menu-201 first"><a href="/frontpage">Blog</a></li>
+<li class="menu-202"><a href="/lovers">Lovers</a></li>
+<li class="menu-179 last"><a href="/about">About</a></li>
+</ul>      </div> <!-- /#main-menu -->
+    
+    
+  </div></div> <!-- /.section, /#header -->
+
+  
+  
+  <div id="main-wrapper" class="clearfix"><div id="main" class="clearfix">
+
+          <div id="breadcrumb"><h2 class="element-invisible">You are here</h2><div class="breadcrumb"><a href="/">Home</a></div></div>
+    
+    
+    <div id="content" class="column"><div class="section">
+            <a id="main-content"></a>
+                    <h1 class="title" id="page-title">
+          A Beginner&#039;s Guide to Shaders        </h1>
+                          <div class="tabs">
+                  </div>
+                          <div class="region region-content">
+    <div id="block-system-main" class="block block-system">
+
+    
+  <div class="content">
+    <div id="node-46" class="node node-blog-post node-promoted node-full clearfix">
+
+      
+      <div class="meta submitted">
+        <div class="user-picture">
+    <a href="/users/omarshehata" title="View user profile."><img src="https://blogs.love2d.org/sites/default/files/pictures/picture-185-1477491539.png" alt="OmarShehata&#039;s picture" title="OmarShehata&#039;s picture" /></a>  </div>
+      Submitted by <a href="/users/omarshehata" title="View user profile." class="username">OmarShehata</a> on Sun, 06/29/2014 - 08:45    </div>
+  
+  <div class="content clearfix">
+    <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even"><p><span style="line-height: 1.5;">Ever since </span><a href="http://www.love2d.org/wiki/Shader" style="line-height: 1.5;">shaders</a><span style="line-height: 1.5;">&nbsp;were introduced in&nbsp;Löve (previously called </span><a href="http://www.love2d.org/wiki/PixelEffect" style="line-height: 1.5;">Pixel Effects</a><span style="line-height: 1.5;">) they have been shrouded in mystery and myth. The only way to learn these&nbsp;mystical black arts was to scour the </span><a href="http://love2d.org/forums/viewtopic.php?f=4&amp;t=3733" style="line-height: 1.5;">examples</a><span style="line-height: 1.5;">&nbsp;others have made in hopes of learning by tweaking enough code.&nbsp;</span></p>
+
+<p>Hopefully, we can change that! By providing a straightforward guide, more people can learn and integrate shaders into their own projects!</p>
+
+<p>&nbsp;</p>
+
+<p>This tutorial will teach you how to set up a basic pixel shader as well as attempt to explain what&nbsp;everything does.</p>
+
+<p>&nbsp;</p>
+
+<h1>What is a shader? (background info)</h1>
+
+<p>All the code you normally write runs on the CPU. As a general purpose unit, that works great for&nbsp;<em>most&nbsp;</em>things. The problem with your CPU is that it is sequential. It runs the instructions it''s given in the order they are written. Even with multi-core computers and multi-threaded applications, you have a limited number of cores and if they are processing the same data, they have to wait until the other is finished with it anyway.</p>
+
+<p>Your&nbsp;<strong>GPU</strong> on the other hand has&nbsp;<em>thousands&nbsp;</em>of cores. It''s built specifically to be able to run instructions thousands or millions of times in parallel. The catch is, it can only run <strong>the same piece of code&nbsp;</strong>on all these cores at any one time. (This isn''t&nbsp;<em>exactly&nbsp;</em>how it works, but for all intents and purposes, it''s a good way to think about it)</p>
+
+<h1>What can I do with shaders?</h1>
+
+<p>Shaders can be immensely useful when making games or any sort of graphics work. You only need to look through the <a href="http://love2d.org/forums/viewtopic.php?f=4&amp;t=3733">Share A Shader thread&nbsp;</a>for a few moments to see all the impressive work.&nbsp;</p>
+
+<p>If you want to do any sort of realistic/dynamic lighting, you''ll need shaders.</p>
+
+<p><img alt="" src="https://blogs.love2d.org/sites/default/files/u185/LoveShadow.gif" style="width: 320px; height: 240px; float: left;" /><img alt="" src="https://blogs.love2d.org/sites/default/files/u185/LoveShadow2.gif" style="width: 320px; height: 240px; float: right;" /></p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>Screens taken from PriorBlue''s <a href="http://love2d.org/forums/viewtopic.php?f=5&amp;t=77418">Love vs Shadow engine</a></p>
+
+<p>Learning how to use shaders in&nbsp;<span style="font-size: 14px; line-height: 21px;">Löve will also teach you how to use them in any other application/platform, since the fundamentals are the same. Just look at all the <a href="https://glsl.heroku.com/">stuff you can do!</a></span></p>
+
+<p>Not only that, but you can potentially leverage the awesome parallel processing power of GPU''s to crunch more than just graphical data, but we''ll discuss that later on.&nbsp;</p>
+
+<h1>Let''s make a shader!</h1>
+
+<p>There are two kinds of shaders. A pixel shader (sometimes referred to as a fragment shader) whose code runs on all the pixels, and a vertex shader which runs on the vertices of your primitives. We''ll start with the <strong>pixel shader.</strong></p>
+
+<p>To set everything up, here''s a standard main.lua you can use.</p>
+
+<pre class="brush: lua">
+function love.load()
+&nbsp; myShader = love.graphics.newShader[[
+&nbsp; &nbsp; vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
+&nbsp; &nbsp; &nbsp; vec4 pixel = Texel(texture, texture_coords );//This is the current pixel color
+&nbsp; &nbsp; &nbsp; return pixel * color;
+&nbsp; &nbsp; }
+&nbsp; ]]
+end
+function love.draw()
+&nbsp; love.graphics.setShader(myShader) --draw something here
+&nbsp; love.graphics.setShader()
+end</pre>
+
+<p>Now let''s step through this.&nbsp;</p>
+
+<p>The first thing we do is create a shader using the function <a href="http://www.love2d.org/wiki/love.graphics.newShader">love.graphics.newShader</a>. This will return a <a href="http://www.love2d.org/wiki/Shader">Shader</a> object.&nbsp;</p>
+
+<p>To apply this shader, we call <a href="http://www.love2d.org/wiki/love.graphics.setShader">love.graphics.setShader </a>in our draw function. Calling the same function with no arguments will disable any shaders. In the above code, only things drawn between the two function calls will be affected by our shader.</p>
+
+<p>Try loading in a simple image and drawing it (or just draw a circle or anything).</p>
+
+<p>This is the example image I''m using, and this is how it looks like when rendered.</p>
+
+<p><img alt="" src="https://blogs.love2d.org/sites/default/files/u185/Standard%20Shader.png" style="width: 700px; height: 546px;" /></p>
+
+<p>You should see it exactly as if there was no shader. To understand, let''s look at the actual shader we wrote.&nbsp;</p>
+
+<h1>What language are shaders written in?</h1>
+
+<p>We can see that we''re passing a big string to the newShader function. It doesn''t look like Lua. Shaders in&nbsp;<span style="font-size: 14px; line-height: 21px;">Löve are written in <strong>GLSL</strong> (OpenGL Shading Language) but with a slight variation. This is important to note because the resources you can look up don''t have to be&nbsp;Löve-specific (or you can try porting shaders from other platforms for practice!)</span></p>
+
+<table cellpadding="5" style="color: rgb(40, 70, 92); font-family: sans-serif; font-size: 13px; line-height: normal;">
+	<tbody>
+		<tr>
+			<th>GLSL</th>
+			<th>LÖVE shader language</th>
+		</tr>
+		<tr>
+			<td>float</td>
+			<td>number</td>
+		</tr>
+		<tr>
+			<td>sampler2D</td>
+			<td>Image</td>
+		</tr>
+		<tr>
+			<td>uniform</td>
+			<td>extern</td>
+		</tr>
+		<tr>
+			<td>texture2D(tex, uv)</td>
+			<td>Texel(tex, uv)</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>These are the only differences. You can look up the <a href="http://www.opengl.org/registry/doc/GLSLangSpec.Full.1.20.8.pdf">documentation of GLSL</a>&nbsp;(<span style="font-size: 14px; line-height: 21px;">Löve uses version 1.20)&nbsp;</span>to learn more about any function.&nbsp;</p>
+
+<p>Now let''s look at the shader code in more detail:</p>
+
+<pre class="brush: lua">
+vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
+&nbsp; vec4 pixel = Texel(texture, texture_coords );//This is the current pixel color
+&nbsp; return pixel * color;
+}</pre>
+
+<p>We know that everything gets passed through this shader before it is drawn, and this code here will run on every pixel in parallel.</p>
+
+<p><strong>GLSL syntax is more akin to C/C++ than Lua, so don''t forget your semicolons!</strong></p>
+
+<p>The entire job of the pixel shader is to return the final color of this pixel. The return type is a vec4, which means it''s a vector with 4 values. These correspond to the red,green,blue and alpha channels, each taking a value from <strong>0 to 1.</strong></p>
+
+<p>Let''s try something even simpler. Remove all that and just return a new, custom color.&nbsp;</p>
+
+<pre class="brush: lua">
+vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
+&nbsp; return vec4(1.0,0.0,0.0,1.0);
+}</pre>
+
+<p>Try to guess what this will look like before running the code.</p>
+
+<p>It returns a red color with full alpha, so regardless of what you draw, or what color you set with love.graphics.setColor, it will appear red.&nbsp;</p>
+
+<p><img alt="" src="https://blogs.love2d.org/sites/default/files/u185/RedBlockShader.png" style="height: 550px; width: 700px;" /></p>
+
+<p>You might also notice that, if you try to draw any external image (as in, not a circle or polygon with the built in drawing API) it will come out as a red rectangle. This is because you''re also overriding the transparency of each pixel.</p>
+
+<p>Each pixel&nbsp;<em>will&nbsp;</em>get this specific color.&nbsp;</p>
+
+<p>So far, this isn''t very useful. It would be more benificial if we had access to information about each pixel so we can better manipulate the image. Let''s look at the arguments passed to us.</p>
+
+<p><strong>What do the arguments mean?</strong></p>
+
+<p>The first argument, a vec4, is the color set during love.graphics.setColor.&nbsp;</p>
+
+<p>The second argument is the image itself being drawn.</p>
+
+<p>The third is a vec2, of the <u>normalized</u> coordinates of the current pixel, <u>relative to the image.</u></p>
+
+<p>The fourth is a vec2, of the coordinates of the current pixel, <u>relative to the screen.</u></p>
+
+<p>&nbsp;</p>
+
+<p>Let''s try to make use of the last two coordinates to illustrate how they work.</p>
+
+<p>Say we want to make a shader, that will turn the right half of the image red, and the left half blue.</p>
+
+<pre class="brush: lua">
+vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
+&nbsp; if(texture_coords.x &gt; 0.5){
+&nbsp; &nbsp; return vec4(1.0,0.0,0.0,1.0);//red
+&nbsp; }
+&nbsp; else
+&nbsp; {
+&nbsp; &nbsp; return vec4(0.0,0.0,1.0,1.0);//blue
+&nbsp; }
+}</pre>
+
+<p>Since the texture_coords are normalized. This means that x=0 is the leftmost point, x=1 is the rightmost, and x = 0.5 is just at the center (you can see how convenient this is).</p>
+
+<p>So regardless of where you draw your image, the right half will be red and the left half will be blue.</p>
+
+<p><img alt="" src="https://blogs.love2d.org/sites/default/files/u185/HalfHalfShader.png" style="height: 548px; width: 700px;" /></p>
+
+<p>What if we wanted to do the same thing, but <em>relative to the screen.</em></p>
+
+<p>In other words, we want anything drawn on the right side of the screen to be red, and anything on the left to be blue.&nbsp;</p>
+
+<pre class="brush: lua">
+vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
+&nbsp; if(screen_coords.x &gt; 400){
+&nbsp; &nbsp; return vec4(1.0,0.0,0.0,1.0);//red
+&nbsp; }
+&nbsp; else
+&nbsp; {
+&nbsp; &nbsp; return vec4(0.0,0.0,1.0,1.0);//blue
+&nbsp; }
+}</pre>
+
+<p>Given that the screen_coords are not normalized (and assuming your screen width is 800), this will make the image completely red if it''s drawn on the right side, vice versa for the blue, and between will work as expected.</p>
+
+<p><img alt="" src="https://blogs.love2d.org/sites/default/files/u185/MovingShader.gif" style="height: 520px; width: 700px;" /></p>
+
+<h1>How can I get the color of the current pixel before changing it?</h1>
+
+<p>This is probably the most useful information you can use. Let''s say we want to give our game a monochromatic feel. All you''d have to do is average out the 3 color channels. (Or something simpler, removing the blue channel from everything will also give it an interesting tinge)</p>
+
+<p>These all sound simple, but how do you get the color of the current pixel?</p>
+
+<p>That''s where the <strong>Texel</strong> function comes in.&nbsp;</p>
+
+<p>It''s pretty straightforward, it takes the texture (image) and the coordinates of the pixel relative to that texture, and returns the color. You conveniently have both passed as ready arguments, so all you have to do is plug them in.</p>
+
+<pre class="brush: lua">
+vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
+&nbsp; vec4 pixel = Texel(texture, texture_coords );//This is the current pixel color
+&nbsp; number average = (pixel.r+pixel.b+pixel.g)/3.0;
+&nbsp; pixel.r = average;
+&nbsp; pixel.g = average;
+&nbsp; pixel.b = average;
+&nbsp; return pixel;
+}</pre>
+
+<p>And there you go! We just made a shader that transforms everything into black and white in real-time!&nbsp;</p>
+
+<p><img alt="" src="https://blogs.love2d.org/sites/default/files/u185/BlackWhite.png" style="height: 550px; width: 700px;" /></p>
+
+<p>&nbsp;</p>
+
+<h1>Combining our knowledge</h1>
+
+<p>Now let''s try making it&nbsp;<em>gradually&nbsp;</em>go from full color to black and white across its width. I''ll wait here if you want to try figuring this out yourself.</p>
+
+<p>Go on, I''ll wait!</p>
+
+<p>&nbsp;</p>
+
+<p>When the r,g and b all have the value of the average, it''s black and white. The farther away it is from the average, and the closer it is to its original value, the image becomes full colored. Given this, we can make these simple equations:</p>
+
+<pre class="brush: lua">
+vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
+&nbsp; vec4 pixel = Texel(texture, texture_coords );//This is the current pixel color
+&nbsp; number average = (pixel.r+pixel.b+pixel.g)/3.0;
+&nbsp; number factor = texture_coords.x;
+&nbsp; pixel.r = pixel.r + (average-pixel.r) * factor;
+&nbsp; pixel.g = pixel.g + (average-pixel.g) * factor;
+&nbsp; pixel.b = pixel.b + (average-pixel.b) * factor;
+&nbsp; return pixel;
+}</pre>
+
+<p>We use the normalized x coordinate as our gradient factor, and we get a gradual black and white image!</p>
+
+<p><img alt="" src="https://blogs.love2d.org/sites/default/files/u185/GradientBlackWhite.png" style="height: 546px; width: 700px;" /></p>
+
+<p>It should be very easy to make it go to black and white gradually over the entire screen instead of per-image, we''ll just change the factor into <strong>screen_coords.x</strong> divided by however wide our screen is.</p>
+
+<p>This sounds annoying though. Do we really have to hardcode in the width of the screen in our shader?</p>
+
+<h1>How do I send variables to my shader?</h1>
+
+<p>Of course there''s a way! And that is, <a href="http://www.love2d.org/wiki/Shader:send">Shader:send</a></p>
+
+<p>The first thing is to set up the shader to receive the variable. In this case, it''s our screen width. So it''s only 1 number. External variables need the prefix "extern" (note: in normal GLSL, that would be "uniform")</p>
+
+<pre class="brush: lua">
+extern number screenWidth;
+vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
+&nbsp; vec4 pixel = Texel(texture, texture_coords );//This is the current pixel color
+&nbsp; number average = (pixel.r+pixel.b+pixel.g)/3.0;
+&nbsp; number factor = screen_coords.x/screenWidth;
+&nbsp; pixel.r = pixel.r + (average-pixel.r) * factor;
+&nbsp; pixel.g = pixel.g + (average-pixel.g) * factor;
+&nbsp; pixel.b = pixel.b + (average-pixel.b) * factor;
+&nbsp; return pixel;
+}</pre>
+
+<p>External variables are declared outside the function, as you can see in the above example.&nbsp;</p>
+
+<p>Then you can run the command</p>
+
+<pre class="brush: lua">
+ myShader:send("screenWidth",800) &nbsp;</pre>
+
+<p>From anywhere in the code. &nbsp;(I''m using 800 for simplicity but you can of course get the width dynamically through <a href="http://www.love2d.org/wiki/love.window.getWidth">love.window.getWidth</a>&nbsp;)</p>
+
+<p>It is worth noting two things about the send technique:</p>
+
+<ul>
+	<li>Communication between CPU and GPU is generally expensive. You don''t want to be sending hundreds of variables per frame</li>
+	<li>What goes to the GPU, stays in the GPU. This is very convenient because it means you don''t have to send everything every frame. You can send the screen width once when you create the shader, and again if it ever changes.&nbsp;</li>
+</ul>
+
+<p>And you''ve just made a snazzy gradient monochromatic shader!</p>
+
+<p><img alt="" src="https://blogs.love2d.org/sites/default/files/u185/MovingMono.gif.gif" style="height: 521px; width: 700px;" /></p>
+
+<p>&nbsp;</p>
+
+<h1>Built-in variables</h1>
+
+<p>There''s a special note about the screen size. Since it''s such a common thing to use,&nbsp;<span style="font-size: 14px; line-height: 21px;">&nbsp;Löve has provided it as a built in variable. You can use it by accessing&nbsp;<strong>love_ScreenSize.x</strong> or&nbsp;<strong>love_ScreenSize.y</strong> at any time in your shader. <a href="http://www.love2d.org/wiki/Shader_Variables">This is only available since 0.9.1</a></span></p>
+
+<p>Another common thing to send to a shader is a time variable. Let''s say you want your image to slowly become black and white over time. It''s the same idea, except the factor will be an extern time variable instead of x or y coordinate.&nbsp;</p>
+
+<p><a href="https://blogs.love2d.org/sites/default/files/u185/ShaderTutorial.love"><strong>Here's a .love of the effect I just mentioned.</strong></a></p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h1>Parting Thoughts</h1>
+
+<p>I hope you''ve enjoyed this guide! That should be everything you need to know to have a basic grasp of how shaders work, and get started. Please let me know what parts were helpful and&nbsp;what were confusing so we could improve this guide.&nbsp;</p>
+
+<p>There''s a lot of other things we could discuss in future tutorials, such as vertex shaders, ways to send larger amounts of data to the GPU (or using it for general purpose calculations as we hinted at earlier), live-updating your shader code so you don''t have to recompile to see changes.</p>
+
+<p>One of the biggest challenges for me in shaders was figuring out how to do self-propagating shaders. By that I mean, all the manipulations that you do to the screen are not saved. What if you wanted to make something that continually distorted an image, building onto its previous iterations?</p>
+
+<p>A very common use for this is a smoke/fluid shader</p>
+
+<p><img alt="" src="https://blogs.love2d.org/sites/default/files/u185/Smoke.gif" style="width: 700px; height: 522px;" /></p>
+
+<p>These are all things we could discuss in future posts, but for the time being, you can see the code for the smoke shader <a href="http://love2d.org/forums/viewtopic.php?f=4&amp;t=3733&amp;p=167865#p167865">here.&nbsp;</a></p>
+
+<p>&nbsp;</p>
+</div></div></div><div class="field field-name-field-addthiswidget field-type-addthis field-label-hidden"><div class="field-items"><div class="field-item even"><div class="addthis_toolbox addthis_default_style addthis_32x32_style " addthis:title="" addthis:url="https://blogs.love2d.org/content/beginners-guide-shaders"><a href="http://www.addthis.com/bookmark.php?v=300" class="addthis_button_google_plusone_share"></a>
+<a href="http://www.addthis.com/bookmark.php?v=300" class="addthis_button_facebook"></a>
+<a href="http://www.addthis.com/bookmark.php?v=300" class="addthis_button_hackernews"></a>
+<a href="http://www.addthis.com/bookmark.php?v=300" class="addthis_button_reddit"></a>
+<a href="http://www.addthis.com/bookmark.php?v=300" class="addthis_button_twitter"></a>
+<a href="http://www.addthis.com/bookmark.php?v=300" class="addthis_button_"></a>
+</div>
+</div></div></div>  </div>
+
+      <div class="link-wrapper">
+      <ul class="links inline"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node/46%23comment-form">Log in</a> or <a href="/user/register?destination=node/46%23comment-form">register</a> to post comments</span></li>
+</ul>    </div>
+  
+  <div id="comments" class="comment-wrapper">
+          <h2 class="title">Comments</h2>
+      
+  <a id="comment-243"></a>
+<div class="comment clearfix">
+
+  <div class="attribution">
+
+      <div class="user-picture">
+    <a href="/users/hmans" title="View user profile."><img src="https://blogs.love2d.org/sites/default/files/pictures/picture-384-1414180511.jpg" alt="hmans&#039;s picture" title="hmans&#039;s picture" /></a>  </div>
+
+    <div class="submitted">
+      <p class="commenter-name">
+        <a href="/users/hmans" title="View user profile." class="username">hmans</a>      </p>
+      <p class="comment-time">
+        Wed, 10/29/2014 - 08:51      </p>
+      <p class="comment-permalink">
+        <a href="/comment/243#comment-243" class="permalink" rel="bookmark">Permalink</a>      </p>
+    </div>
+  </div>
+
+  <div class="comment-text">
+    <div class="comment-arrow"></div>
+
+    
+<!--
+        <h3><a href="/comment/243#comment-243" class="permalink" rel="bookmark">Thanks. Now on to the</a></h3>
+    -->
+    <div class="content">
+      <div class="field field-name-comment-body field-type-text-long field-label-hidden"><div class="field-items"><div class="field-item even"><p>Thanks. Now on to the mentioned future posts! :)</p>
+</div></div></div>          </div> <!-- /.content -->
+
+    <ul class="links inline"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node/46%23comment-form">Log in</a> or <a href="/user/register?destination=node/46%23comment-form">register</a> to post comments</span></li>
+</ul>  </div> <!-- /.comment-text -->
+</div>
+<a id="comment-253"></a>
+<div class="comment clearfix">
+
+  <div class="attribution">
+
+      <div class="user-picture">
+    <a href="/users/darkshroom" title="View user profile."><img src="https://blogs.love2d.org/sites/default/files/pictures/picture-775-1501780779.png" alt="DarkShroom&#039;s picture" title="DarkShroom&#039;s picture" /></a>  </div>
+
+    <div class="submitted">
+      <p class="commenter-name">
+        <a href="/users/darkshroom" title="View user profile." class="username">DarkShroom</a>      </p>
+      <p class="comment-time">
+        Sat, 12/09/2017 - 08:31      </p>
+      <p class="comment-permalink">
+        <a href="/comment/253#comment-253" class="permalink" rel="bookmark">Permalink</a>      </p>
+    </div>
+  </div>
+
+  <div class="comment-text">
+    <div class="comment-arrow"></div>
+
+    
+<!--
+        <h3><a href="/comment/253#comment-253" class="permalink" rel="bookmark">The smoke shader does not</a></h3>
+    -->
+    <div class="content">
+      <div class="field field-name-comment-body field-type-text-long field-label-hidden"><div class="field-items"><div class="field-item even"><p>The smoke shader does not work on the latest love version<br />
+<br />
+I have edited it on the forum (unable to save link due to spam filter)</p>
+</div></div></div>          </div> <!-- /.content -->
+
+    <ul class="links inline"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node/46%23comment-form">Log in</a> or <a href="/user/register?destination=node/46%23comment-form">register</a> to post comments</span></li>
+</ul>  </div> <!-- /.comment-text -->
+</div>
+
+<div class="indented"><a id="comment-256"></a>
+<div class="comment clearfix">
+
+  <div class="attribution">
+
+      <div class="user-picture">
+    <a href="/users/albur-godwin" title="View user profile."><img src="https://blogs.love2d.org/sites/default/files/love-logo.png" alt="Albur Godwin&#039;s picture" title="Albur Godwin&#039;s picture" /></a>  </div>
+
+    <div class="submitted">
+      <p class="commenter-name">
+        <a href="/users/albur-godwin" title="View user profile." class="username">Albur Godwin</a>      </p>
+      <p class="comment-time">
+        Tue, 01/04/2022 - 05:56      </p>
+      <p class="comment-permalink">
+        <a href="/comment/256#comment-256" class="permalink" rel="bookmark">Permalink</a>      </p>
+    </div>
+  </div>
+
+  <div class="comment-text">
+    <div class="comment-arrow"></div>
+
+    
+<!--
+        <h3><a href="/comment/256#comment-256" class="permalink" rel="bookmark">Here is a spaced version of</a></h3>
+    -->
+    <div class="content">
+      <div class="field field-name-comment-body field-type-text-long field-label-hidden"><div class="field-items"><div class="field-item even"><p>Here is a spaced version of the URL (I managed to find your forum comment using the date of your comment here, but I think a link is still nicer):<br />
+<em>(remove spaces)</em><br />
+love2d . org/forums/viewtopic . php?p=216998#p216998</p>
+
+<p>(For the record, I had the same idea as you had, but read the Love2D documentation too quickly and thought the new <em>clear</em> was clearing all canvases at once… Absent-minded me.)</p>
+</div></div></div>          </div> <!-- /.content -->
+
+    <ul class="links inline"><li class="comment_forbidden first last"><span><a href="/user/login?destination=node/46%23comment-form">Log in</a> or <a href="/user/register?destination=node/46%23comment-form">register</a> to post comments</span></li>
+</ul>  </div> <!-- /.comment-text -->
+</div>
+</div>
+  </div>
+
+</div>
+  </div>
+</div>
+  </div>
+      
+    </div></div> <!-- /.section, /#content -->
+
+          <div id="sidebar-second" class="column sidebar"><div class="section">
+          <div class="region region-sidebar-second">
+    <div id="block-block-4" class="block block-block">
+
+    
+  <div class="content">
+    <a href="http://love2d.org">↵ Return to love2d.org</a>  </div>
+</div>
+<div id="block-tagclouds-1" class="block block-tagclouds">
+
+    <h2>Tag Cloud</h2>
+  
+  <div class="content">
+    <span class='tagclouds-term'><a href="/content/first-class-functions-0" class="tagclouds level1" title="">concepts</a></span>
+<span class='tagclouds-term'><a href="/content/first-class-functions-0" class="tagclouds level1" title="">first-class</a></span>
+<span class='tagclouds-term'><a href="/content/first-class-functions-0" class="tagclouds level1" title="">functions</a></span>
+<span class='tagclouds-term'><a href="/content/scope-within-lua" class="tagclouds level1" title="">global</a></span>
+<span class='tagclouds-term'><a href="/blog-terms/glsl" class="tagclouds level3" title="">glsl</a></span>
+<span class='tagclouds-term'><a href="/blog-terms/interview" class="tagclouds level6" title="">interview</a></span>
+<span class='tagclouds-term'><a href="/content/scope-within-lua" class="tagclouds level1" title="">local</a></span>
+<span class='tagclouds-term'><a href="/blog-terms/lua" class="tagclouds level5" title="">lua</a></span>
+<span class='tagclouds-term'><a href="/blog-terms/pixel-effect" class="tagclouds level3" title="">pixel effect</a></span>
+<span class='tagclouds-term'><a href="/content/scope-within-lua" class="tagclouds level1" title="">scope</a></span>
+<span class='tagclouds-term'><a href="/blog-terms/shader" class="tagclouds level3" title="">shader</a></span>
+<span class='tagclouds-term'><a href="/content/hello-world" class="tagclouds level1" title="">Welcome</a></span>
+<div class="more-link"><a href="/tagclouds/chunk/1" title="more tags">More</a></div>  </div>
+</div>
+  </div>
+      </div></div> <!-- /.section, /#sidebar-second -->
+    
+  </div></div> <!-- /#main, /#main-wrapper -->
+
+  
+  <div id="footer-wrapper"><div class="section">
+
+    
+          <div id="footer" class="clearfix">
+          <div class="region region-footer">
+    <div id="block-system-powered-by" class="block block-system">
+
+    
+  <div class="content">
+    <span>Powered by <a href="https://www.drupal.org">Drupal</a></span>  </div>
+</div>
+  </div>
+      </div> <!-- /#footer -->
+    
+  </div></div> <!-- /.section, /#footer-wrapper -->
+
+</div></div> <!-- /#page, /#page-wrapper -->
+  <script type="text/javascript" src="https://blogs.love2d.org/sites/default/files/js/js_sJX1f7bue0bGE5vgiAuVz4BZmzUOKsteiWO7Iegqy2g.js"></script>
+<script type="text/javascript" src="https://blogs.love2d.org/sites/default/files/js/js_MLVgtzZ1ORq9krYqkeOsRay6ou_T-0QZytivuM9tTT8.js"></script>
+</body>
+</html>
