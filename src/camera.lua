@@ -39,13 +39,25 @@ function Camera.create()
 			
 			number r = world_coords.x * world_coords.x + world_coords.y * world_coords.y;
 			number limit = radius * radius;
+			number delta = (r - limit) ;
 			
 			if(r < limit){
 				number c = r/limit;
 				number edge = c*c;
 				number rim = edge * edge;
+				number rim2 = rim * rim;
+				number rim4 = rim2 * rim2;
+				number fixed_color = 0;
+				if(delta < 0 && delta > (-5* radius)){
+					fixed_color = 1;
+				}
+				
+				//return vec4(1, rim4, rim4, edge);
+				//return vec4(rim4, 1* 0.5, 0, edge);
+				//return vec4(0, 1* 0.5, rim4* 0.5, edge);
 				//return vec4(1, rim*rim, rim*rim, edge);
 				//return vec4(rim, 1, rim*rim, edge);
+				//return vec4(0, 1, 0, edge);
 				return vec4(rim*rim/2, rim/2, 1, edge);
 			}
 			else
