@@ -28,6 +28,7 @@ function Camera.create()
 
 	self.shieldShader = love.graphics.newShader[[
 		extern number radius;
+		extern number seed;
 		
 		extern vec2 to_world_tran;
 		extern mat2 to_world_rot;
@@ -39,7 +40,18 @@ function Camera.create()
 			
 			number r = world_coords.x * world_coords.x + world_coords.y * world_coords.y;
 			number limit = radius * radius;
-			number delta = (r - limit) ;
+			number delta = (r - limit);
+			
+			int si = int(seed * 256);
+			int sx = int(screen_coords.x) + si;
+			int sy = int(screen_coords.y) + si;
+			//int num = ((si*si*si + 51)*sy*sy + 79) * sx + 17;
+			//int num = si*si*si*si + 7*sy*sy*sy + 37*sx*sx + 17;
+			int num = 7*sy*sy*sy + 37*sx*sx + 17;
+			int dim = 256;
+			
+			int random = num - dim * (num/dim);
+			number rm = float(random)/128 + 0.5;
 			
 			if(r < limit){
 				number c = r/limit;
@@ -58,7 +70,7 @@ function Camera.create()
 				//return vec4(1, rim*rim, rim*rim, edge);
 				//return vec4(rim, 1, rim*rim, edge);
 				//return vec4(0, 1, 0, edge);
-				return vec4(rim*rim/2, rim/2, 1, edge);
+				return vec4(rim*rim*0.5, rim*0.5, 0.5, edge * rm);
 			}
 			else
 			{
@@ -356,10 +368,10 @@ function Camera:drawWorldObjects(player, debugmode)
 	local testPointFunctions = {}
 	local shieldData = {}
 	for _, shieldFixture in ipairs(fixtureList[shieldCategoryNumber]) do
-		table.insert(testPointFunctions, shieldFixture:getUserData().testPoint())
+		--table.insert(testPointFunctions, shieldFixture:getUserData().testPoint())
 		table.insert(shieldData, {shieldFixture:getUserData():data()})
 	end
-	player.shieldPoints = player.camera:testPoints(testPointFunctions)
+	--player.shieldPoints = player.camera:testPoints(testPointFunctions)
 	self.shieldData = shieldData
 
 	endTime = love.timer.getTime( )
@@ -483,9 +495,18 @@ function Camera:drawPlayer(player, debugmode)
 	--Set translation for hud
 	love.graphics.origin()
 	love.graphics.translate(scissor.x, scissor.y)
+	
+	local sh_x, sh_y = 0, 0
+	
+	if self.shieldData[1] then
+		local shield_data = self.shieldData[1][1]
+		sh_x =  self.zoom * (shield_data[1] - self.x) + scissor.x + scissor.width/2
+		sh_y = -self.zoom * (shield_data[2] - self.y) + scissor.y + scissor.height/2
+	end
 
+	self.shieldShader:send("seed", math.random())
 	self.shieldShader:send("radius", 100)
-	self.shieldShader:send("to_world_tran", {50, 200}) 
+	self.shieldShader:send("to_world_tran", {sh_x, sh_y}) 
 	self.shieldShader:send("to_world_rot", {{1, 0}, {0, 1}})
 	
 	if self.shieldData[1] then
@@ -495,13 +516,14 @@ function Camera:drawPlayer(player, debugmode)
 	love.graphics.setShader(self.shieldShader) --draw something here
 	love.graphics.rectangle( "fill", 0, 0, scissor.width, scissor.height)
 	love.graphics.setShader()
-
+--[[
 	--Draw shields
 	love.graphics.setColor(31/255, 63/255, 143/255, 95/255)
 	local drawPoints = love.graphics.points
 	for _, list in ipairs(player.shieldPoints) do
 		drawPoints(unpack(list))
 	end
+--]]
 	love.graphics.setColor(1, 1, 1, 1)
 
 	self.hud:draw(playerDrawPack, viewPort)
