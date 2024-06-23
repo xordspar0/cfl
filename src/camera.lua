@@ -30,13 +30,25 @@ function Camera.create()
 		extern number radius;
 		extern number seed;
 		
-		extern vec2 to_world_tran;
+		//extern vec2 to_world_trans[];
+		
+		extern vec2 screen_center_tran;
 		extern mat2 to_world_rot;
+		extern vec2 to_world_tran;
 		
 		vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
 			vec4 pixel = Texel(texture, texture_coords );//This is the current pixel color
 			
-			vec2 world_coords = to_world_rot * (screen_coords - to_world_tran);
+			//vec2 to_world_tran;
+			//to_world_tran.x = 0;
+			//to_world_tran.y = 0;
+			
+			//if(to_world_trans.length() > 0)
+			//{
+			//	to_world_tran = to_world_trans[0];
+			//}
+			
+			vec2 world_coords = to_world_rot * (screen_coords - screen_center_tran) - to_world_tran;
 			
 			number r = world_coords.x * world_coords.x + world_coords.y * world_coords.y;
 			number limit = radius * radius;
@@ -500,14 +512,27 @@ function Camera:drawPlayer(player, debugmode)
 	
 	if self.shieldData[1] then
 		local shield_data = self.shieldData[1][1]
-		sh_x =  self.zoom * (shield_data[1] - self.x) + scissor.x + scissor.width/2
-		sh_y = -self.zoom * (shield_data[2] - self.y) + scissor.y + scissor.height/2
+		sh_x =  self.zoom * (shield_data[1] - self.x)
+		sh_y = -self.zoom * (shield_data[2] - self.y)
+		
 	end
+	
+	local sc_x = scissor.x + scissor.width/2
+	local sc_y = scissor.y + scissor.height/2
 
+	local camera_sin = math.sin(self.angle)
+	local camera_cos = math.cos(self.angle)
+
+	local rotation = {
+		{camera_cos, camera_sin},
+		{-camera_sin, camera_cos}
+	}
+	
 	self.shieldShader:send("seed", math.random())
 	self.shieldShader:send("radius", 100)
+	self.shieldShader:send("screen_center_tran", {sc_x, sc_y}) 
+	self.shieldShader:send("to_world_rot", rotation)
 	self.shieldShader:send("to_world_tran", {sh_x, sh_y}) 
-	self.shieldShader:send("to_world_rot", {{1, 0}, {0, 1}})
 	
 	if self.shieldData[1] then
 		self.shieldShader:send("radius", self.zoom * self.shieldData[1][2])
